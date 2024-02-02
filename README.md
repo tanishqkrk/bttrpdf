@@ -1,6 +1,5 @@
 <p style="text-align: center; color: #50D890; font-size: 52px; font-weight: 700"><img style="width: 45px" src="./public/logo.svg"/> BttrPDF</p>
-
-## Generate PDFs in real-time
+## Generate PDFs in real-time:
 
 ### Core functionlaity
 1. Elements can be added to a webpage and can. The  webpage can be converted to a PDF.
