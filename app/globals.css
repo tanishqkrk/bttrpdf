@@ -1,0 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  font-family: "Outfit", sans-serif;
+}
+body {
+  color: #effffb;
+  /* white-space: #ffffff5f; */
+  background-color: #272727;
+  /* opacity: 0.4; */
+  background-image: radial-gradient(#50d88f36 1.1px, transparent 1.1px),
+    radial-gradient(#50d88f36 1.1px, #181818 1.1px);
+  background-size: 44px 44px;
+  background-position: 0 0, 22px 22px;
+  /* background-color: #272727; */
+  /* opacity: 0.4; */
+}
