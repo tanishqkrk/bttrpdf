@@ -1,5 +1,3 @@
-import CTAButton from "@/components/UI/CTAButton";
-
 export default function Home() {
   return (
     <div className="w-screen h-screen flex flex-col justify-center items-center gap-8 pt-16 select-none">
@@ -19,7 +17,7 @@ export default function Home() {
         </h6>
       </div>
       <div>
-        <CTAButton text={"Get Started"} />
+        <button className="cta">Get Started</button>
       </div>
     </div>
   );

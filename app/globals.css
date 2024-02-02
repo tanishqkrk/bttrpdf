@@ -12,8 +12,8 @@ body {
   /* white-space: #ffffff5f; */
   background-color: #272727;
   /* opacity: 0.4; */
-  background-image: radial-gradient(#50d88f36 1.1px, transparent 1.1px),
-    radial-gradient(#50d88f36 1.1px, #181818 1.1px);
+  background-image: radial-gradient(#50d88f58 1.1px, transparent 1.1px),
+    radial-gradient(#50d88f58 1.1px, #181818 1.1px);
   background-size: 44px 44px;
   background-position: 0 0, 22px 22px;
   /* background-color: #272727; */

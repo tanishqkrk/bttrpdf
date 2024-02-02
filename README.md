@@ -1,4 +1,4 @@
-# BttrPdf
+<p style="text-align: center; color: #50D890; font-size: 52px; font-weight: 700"><img style="width: 45px" src="./public/logo.svg"/> BttrPDF</p>
 
 ## Generate PDFs in real-time
 
