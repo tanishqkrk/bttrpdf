@@ -14,6 +14,7 @@ import {
   sendSignInLinkToEmail,
   isSignInWithEmailLink,
   createUserWithEmailAndPassword,
+  getAdditionalUserInfo,
 } from "firebase/auth";
 import { auth, db } from "@/firebase";
 import { useRouter } from "next/navigation";
@@ -23,7 +24,7 @@ import { usePathname } from "next/navigation";
 const AuthContext = createContext(null);
 
 function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({});
   const [userFromDB, setUserFromDB] = useState(null);
   // const [userFromDB, setUserFromDB] = (useState < any) | (null > null);
   const router = useRouter();
@@ -35,6 +36,7 @@ function AuthProvider({ children }) {
 
   async function openAuthGoogle() {
     const googleProvider = new GoogleAuthProvider();
+
     try {
       const response = await signInWithPopup(auth, googleProvider);
       return response;

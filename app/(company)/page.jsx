@@ -17,7 +17,7 @@ export default function Home() {
         </h6>
       </div>
       <div>
-        <button className="cta">Get Started</button>
+        <button className="cta">Try it out!</button>
       </div>
     </div>
   );
