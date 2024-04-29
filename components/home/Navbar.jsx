@@ -31,16 +31,32 @@ export default function () {
         </a>
         <ModeToggle></ModeToggle>
         {userData ? (
-          <Button
-            variant="primary"
-            className="bg-theme text-white z-[9999] p-6"
-          >
-            <Link href={"/dashboard"} className="flex gap-3 items-center">
-              <img className="w-8 rounded-full" src={userData?.img} alt="" />
-              <p>Hey {userData?.name.split(" ")[0]}, Go to dashboard.</p>
-              <ChevronRight />
-            </Link>
-          </Button>
+          <Link href={"/dashboard"}>
+            <Button
+              onClick={() => {
+                setLoading(true);
+              }}
+              variant="primary"
+              className="bg-theme text-white z-[9999] p-6"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <p>Please wait</p>
+                </>
+              ) : (
+                <div className="flex gap-3 items-center">
+                  <img
+                    className="w-8 rounded-full"
+                    src={userData?.img}
+                    alt=""
+                  />
+                  <p>Hey {userData?.name.split(" ")[0]}, Go to dashboard.</p>
+                  <ChevronRight />
+                </div>
+              )}
+            </Button>
+          </Link>
         ) : (
           <div className="relative google p-1 rounded-lg">
             <Button
@@ -58,8 +74,8 @@ export default function () {
                     img: user?.photoURL,
                     pdf_list: [],
                   });
-                  setLoading(false);
                 }
+                setLoading(false);
               }}
               variant="secondary"
               className="z-[9999]  flex  gap-3"
