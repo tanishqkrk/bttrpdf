@@ -22,7 +22,7 @@ export default function Home() {
           </Button>
         </div>
         <div className="text-sm">
-          * Making an account with Google is required to use BttrPdf.
+          * Making an account with Google is required to use Bttrpdf.
         </div>
       </div>
       <div className="w-1/2">

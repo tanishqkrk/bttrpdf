@@ -1,6 +1,8 @@
 import { Manrope } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeProvider";
+import { AuthProvider } from "@/context/AuthContext";
+import { DataProvider } from "@/context/DataContext";
 
 const inter = Manrope({ subsets: ["latin"] });
 
@@ -15,7 +17,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html className="" lang="en">
+    <html lang="en">
       <body className={inter.className}>
         <ThemeProvider
           attribute="class"
@@ -23,7 +25,9 @@ export default function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <AuthProvider>
+            <DataProvider>{children}</DataProvider>
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>
