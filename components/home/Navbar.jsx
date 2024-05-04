@@ -9,6 +9,7 @@ import useData from "@/context/DataContext";
 import { getAdditionalUserInfo } from "firebase/auth";
 import { useState } from "react";
 import { ChevronRight } from "lucide-react";
+import useMotion from "@/context/MotionContext";
 
 export default function () {
   const { openAuthGoogle, user } = useAuth();
@@ -16,6 +17,9 @@ export default function () {
 
   const [loading, setLoading] = useState(false);
   console.log(userData);
+
+  const { M } = useMotion();
+
   return (
     <header className="flex justify-between items-center p-3 px-8 border-b-2 fixed w-full">
       <div>
@@ -45,7 +49,12 @@ export default function () {
                   <p>Please wait</p>
                 </>
               ) : (
-                <div className="flex gap-3 items-center">
+                <M.div
+                  whileTap={{
+                    scale: 0.9,
+                  }}
+                  className="flex gap-3 items-center"
+                >
                   <img
                     className="w-8 rounded-full"
                     src={userData?.img}
@@ -53,7 +62,7 @@ export default function () {
                   />
                   <p>Hey {userData?.name.split(" ")[0]}, Go to dashboard.</p>
                   <ChevronRight />
-                </div>
+                </M.div>
               )}
             </Button>
           </Link>

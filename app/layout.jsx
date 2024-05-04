@@ -3,6 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeProvider";
 import { AuthProvider } from "@/context/AuthContext";
 import { DataProvider } from "@/context/DataContext";
+import { MotionProvider } from "@/context/MotionContext";
 
 const inter = Manrope({ subsets: ["latin"] });
 
@@ -26,7 +27,9 @@ export default function RootLayout({ children }) {
           disableTransitionOnChange
         >
           <AuthProvider>
-            <DataProvider>{children}</DataProvider>
+            <DataProvider>
+              <MotionProvider>{children}</MotionProvider>
+            </DataProvider>
           </AuthProvider>
         </ThemeProvider>
       </body>
