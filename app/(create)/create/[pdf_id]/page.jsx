@@ -15,6 +15,7 @@ import useMotion from "@/context/MotionContext";
 import { AnimatePresence } from "framer-motion";
 import { collection, addDoc, setDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase";
+
 export default function Create({ params }) {
   const { userData, uploadToDB } = useData();
   const ID = params.pdf_id;
@@ -23,7 +24,7 @@ export default function Create({ params }) {
 
   const [baseData, setBaseData] = useState({});
 
-  const [content, setContent] = useState([]);
+  const [content, setContent] = useState({});
 
   useMemo(() => {
     setBaseData(userData?.pdf_list?.filter((x) => x.id === ID)[0]);
@@ -41,13 +42,29 @@ export default function Create({ params }) {
   const addButtonsStyle =
     " flex gap-3 w-full p-1   text-sm items-center dark:text-white text-black p-5 opacity-60 hover:opacity-100 transition-all duration-400";
 
+  const PDF_config = {
+    padding_x: 32,
+    padding_y: 32,
+    background_color: "#fff",
+    text_color: "#000",
+  };
+
+  useEffect(() => {
+    async function fetchContent() {
+      const docRef = doc(db, "content", baseData?.content_id);
+      const docSnap = await getDoc(docRef);
+      setContent(docSnap.data());
+    }
+    fetchContent();
+  }, [userData]);
+
   function addElement(type) {
     if (type === "heading") {
       setContent((prev) => {
         return {
           ...prev,
           content: [
-            ...prev.content,
+            ...prev?.content,
             {
               type: "heading",
               id: crypto.randomUUID(),
@@ -63,15 +80,9 @@ export default function Create({ params }) {
     }
   }
 
-  async function fetchContent() {
-    const docRef = doc(db, "content", baseData?.content_id);
-    const docSnap = await getDoc(docRef);
-    setContent(docSnap.data());
-  }
-
   useEffect(() => {
-    return async () => fetchContent();
-  }, []);
+    // console.log(content);
+  }, [content]);
 
   return (
     <div className="bg-secondary">
@@ -198,13 +209,33 @@ export default function Create({ params }) {
       </AnimatePresence>
 
       <div className="flex justify-center p-12">
-        <div className="h-[1163px] w-[794px] bg-white dark:bg-zinc-800 border-2 ">
-          {content?.content?.map((element) => {
-            if (element?.type === "heading") {
-              return <h1 key={element?.id}>{element?.heading}</h1>;
-            }
-          })}
-        </div>
+        {content?.content ? (
+          <div
+            style={{
+              padding: `${PDF_config?.padding_x}px ${PDF_config?.padding_y}px `,
+              background: PDF_config?.background_color,
+              color: PDF_config?.text_color,
+            }}
+            className="h-[1163px] w-[794px] bg-white dark:bg-zinc-800 border-2 "
+          >
+            {content?.content?.map((element) => {
+              if (element?.type === "heading") {
+                return <h1>{element?.heading}</h1>;
+              }
+            })}
+          </div>
+        ) : (
+          <div
+            style={{
+              padding: `${PDF_config?.padding_x}px ${PDF_config?.padding_y}px `,
+              background: PDF_config?.background_color,
+              color: PDF_config?.text_color,
+            }}
+            className="h-[1163px] w-[794px] bg-white dark:bg-zinc-800 border-2 flex justify-center items-start text-center "
+          >
+            Loading...
+          </div>
+        )}
       </div>
     </div>
   );
