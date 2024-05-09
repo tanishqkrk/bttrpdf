@@ -28,6 +28,12 @@ export default function Page() {
                       last_opened: Date.now(),
                       created_on: Date.now(),
                       content_id: pdf_content_id,
+                      PDF_config: {
+                        padding_x: 32,
+                        padding_y: 32,
+                        background_color: "#fff",
+                        text_color: "#000",
+                      },
                     },
                   ],
                 });
