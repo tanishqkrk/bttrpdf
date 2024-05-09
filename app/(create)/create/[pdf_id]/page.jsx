@@ -179,7 +179,7 @@ export default function Create({ params }) {
     ...colorArray.brown,
   ];
 
-  console.log(...content?.content);
+  // console.log(...content?.content);
 
   return (
     <div className="bg-secondary">
