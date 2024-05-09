@@ -33,6 +33,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Baseline } from "lucide-react";
+import { AlignLeft } from "lucide-react";
+import { AlignCenter } from "lucide-react";
+import { AlignRight } from "lucide-react";
 
 export default function Create({ params }) {
   const { userData, uploadToDB } = useData();
@@ -79,6 +82,7 @@ export default function Create({ params }) {
         size: 1,
         fontColor: "#000",
         backgroundColor: "#fff",
+        textAlign: "center",
       };
       setContent((prev) => {
         return {
@@ -100,11 +104,6 @@ export default function Create({ params }) {
       "#FF6666",
       "#FF9999",
       "#FFCCCC",
-      "#FF3333",
-      "#FF6666",
-      "#FF9999",
-      "#FFCCCC",
-      "#FF0000", // Red
     ],
     green: [
       "#00FF00", // Green
@@ -112,11 +111,6 @@ export default function Create({ params }) {
       "#66FF66",
       "#99FF99",
       "#CCFFCC",
-      "#33FF33",
-      "#66FF66",
-      "#99FF99",
-      "#CCFFCC",
-      "#00FF00", // Green
     ],
     blue: [
       "#0000FF", // Blue
@@ -124,11 +118,6 @@ export default function Create({ params }) {
       "#6666FF",
       "#9999FF",
       "#CCCCFF",
-      "#3333FF",
-      "#6666FF",
-      "#9999FF",
-      "#CCCCFF",
-      "#0000FF", // Blue
     ],
     blackToWhite: [
       "#000000", // Black
@@ -137,11 +126,6 @@ export default function Create({ params }) {
       "#999999",
       "#CCCCCC",
       "#FFFFFF", // White
-      "#CCCCCC",
-      "#999999",
-      "#666666",
-      "#333333",
-      "#000000", // Black
     ],
     yellow: [
       "#FFFF00", // Yellow
@@ -149,34 +133,22 @@ export default function Create({ params }) {
       "#FFFF66",
       "#FFFF99",
       "#FFFFCC",
-      "#FFFF33",
-      "#FFFF66",
-      "#FFFF99",
-      "#FFFFCC",
-      "#FFFF00", // Yellow
     ],
     brown: [
       "#8B4513", // Brown
       "#A0522D",
       "#CD853F",
       "#D2691E",
-      "#8B4513",
-      "#A0522D",
-      "#CD853F",
-      "#D2691E",
-      "#8B4513",
-      "#A0522D", // Brown
     ],
   };
-
   // Combine all arrays into one
   const colors = [
+    ...colorArray.blackToWhite,
+    ...colorArray.brown,
     ...colorArray.red,
     ...colorArray.green,
     ...colorArray.blue,
-    ...colorArray.blackToWhite,
     ...colorArray.yellow,
-    ...colorArray.brown,
   ];
 
   // console.log(...content?.content);
@@ -221,7 +193,7 @@ export default function Create({ params }) {
             <div>
               <Select
                 className=""
-                defaultValue={content?.content
+                value={content?.content
                   ?.filter((x) => x.id === selectedElement.id)[0]
                   ?.size.toString()}
                 onValueChange={(e) => {
@@ -276,7 +248,7 @@ export default function Create({ params }) {
                 <DropdownMenuContent>
                   <DropdownMenuLabel>Text color</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <div className="grid grid-cols-8 gap-2">
+                  <div className="grid grid-cols-5 gap-2">
                     {colors?.map((color) => {
                       return (
                         <DropdownMenuItem
@@ -307,8 +279,14 @@ export default function Create({ params }) {
                           <div
                             style={{
                               background: color,
+                              outline:
+                                content?.content?.filter(
+                                  (x) => x.id === selectedElement.id
+                                )[0]?.fontColor === color
+                                  ? "3px solid lightgray"
+                                  : "",
                             }}
-                            className="w-5 h-5  rounded-full"
+                            className="w-5 h-5  rounded-sm"
                           ></div>
                         </DropdownMenuItem>
                       );
@@ -316,6 +294,152 @@ export default function Create({ params }) {
                   </div>
                 </DropdownMenuContent>
               </DropdownMenu>
+            </div>
+            <div className="flex gap-3 items-center">
+              <Button
+                onClick={() => {
+                  setContent((prev) => {
+                    return {
+                      ...prev,
+                      content: [
+                        ...prev?.content?.filter(
+                          (x) =>
+                            x.id !==
+                            content?.content?.filter(
+                              (x) => x.id === selectedElement.id
+                            )[0].id
+                        ),
+                        {
+                          ...content?.content?.filter(
+                            (x) => x.id === selectedElement.id
+                          )[0],
+                          textAlign: "left",
+                        },
+                      ],
+                    };
+                  });
+                }}
+                variant={
+                  content?.content?.filter(
+                    (x) => x.id === selectedElement.id
+                  )[0]?.textAlign === "left"
+                    ? "primary"
+                    : "outline"
+                }
+                className={
+                  content?.content?.filter(
+                    (x) => x.id === selectedElement.id
+                  )[0]?.textAlign === "left"
+                    ? "bg-theme"
+                    : "bg-inherit"
+                }
+              >
+                <AlignLeft
+                  color={
+                    content?.content?.filter(
+                      (x) => x.id === selectedElement.id
+                    )[0]?.textAlign === "left"
+                      ? "white"
+                      : "black"
+                  }
+                />
+              </Button>
+              <Button
+                onClick={() => {
+                  setContent((prev) => {
+                    return {
+                      ...prev,
+                      content: [
+                        ...prev?.content?.filter(
+                          (x) =>
+                            x.id !==
+                            content?.content?.filter(
+                              (x) => x.id === selectedElement.id
+                            )[0].id
+                        ),
+                        {
+                          ...content?.content?.filter(
+                            (x) => x.id === selectedElement.id
+                          )[0],
+                          textAlign: "center",
+                        },
+                      ],
+                    };
+                  });
+                }}
+                variant={
+                  content?.content?.filter(
+                    (x) => x.id === selectedElement.id
+                  )[0]?.textAlign === "center"
+                    ? "primary"
+                    : "outline"
+                }
+                className={
+                  content?.content?.filter(
+                    (x) => x.id === selectedElement.id
+                  )[0]?.textAlign === "center"
+                    ? "bg-theme"
+                    : "bg-inherit"
+                }
+              >
+                <AlignCenter
+                  color={
+                    content?.content?.filter(
+                      (x) => x.id === selectedElement.id
+                    )[0]?.textAlign === "center"
+                      ? "white"
+                      : "black"
+                  }
+                />
+              </Button>
+              <Button
+                onClick={() => {
+                  setContent((prev) => {
+                    return {
+                      ...prev,
+                      content: [
+                        ...prev?.content?.filter(
+                          (x) =>
+                            x.id !==
+                            content?.content?.filter(
+                              (x) => x.id === selectedElement.id
+                            )[0].id
+                        ),
+                        {
+                          ...content?.content?.filter(
+                            (x) => x.id === selectedElement.id
+                          )[0],
+                          textAlign: "right",
+                        },
+                      ],
+                    };
+                  });
+                }}
+                variant={
+                  content?.content?.filter(
+                    (x) => x.id === selectedElement.id
+                  )[0]?.textAlign === "right"
+                    ? "primary"
+                    : "outline"
+                }
+                className={
+                  content?.content?.filter(
+                    (x) => x.id === selectedElement.id
+                  )[0]?.textAlign === "right"
+                    ? "bg-theme"
+                    : "bg-inherit"
+                }
+              >
+                <AlignRight
+                  color={
+                    content?.content?.filter(
+                      (x) => x.id === selectedElement.id
+                    )[0]?.textAlign === "right"
+                      ? "white"
+                      : "black"
+                  }
+                />
+              </Button>
             </div>
           </div>
         ) : selectedElement?.type === "text" ? (
@@ -433,227 +557,229 @@ export default function Create({ params }) {
             }}
             className="h-[1163px] w-[794px]  border-2 "
           >
-            {content?.content?.map((element) => {
-              if (element?.type === "heading") {
-                if (element?.size === 1) {
-                  return (
-                    <h1
-                      onClick={() => {
-                        setSelectedElement(element);
-                      }}
-                    >
-                      <input
-                        style={{
-                          fontSize: "34" + "px",
-                          fontWeight: 700,
-                          textAlign: "center",
-                          color: element?.fontColor,
+            {content?.content
+              ?.sort((a, b) => a.timestamp - b.timestamp)
+              ?.map((element) => {
+                if (element?.type === "heading") {
+                  if (element?.size === 1) {
+                    return (
+                      <h1
+                        onClick={() => {
+                          setSelectedElement(element);
                         }}
-                        type="text"
-                        className="w-full focus-within:outline-none"
-                        value={element?.heading}
-                        onChange={(e) => {
-                          setContent((prev) => {
-                            return {
-                              ...prev,
-                              content: [
-                                ...prev?.content?.filter(
-                                  (x) => x.id !== element.id
-                                ),
-                                {
-                                  ...element,
-                                  heading: e.target.value,
-                                },
-                              ],
-                            };
-                          });
+                      >
+                        <input
+                          style={{
+                            fontSize: "34" + "px",
+                            fontWeight: 700,
+                            textAlign: element?.textAlign,
+                            color: element?.fontColor,
+                          }}
+                          type="text"
+                          className="w-full focus-within:outline-none"
+                          value={element?.heading}
+                          onChange={(e) => {
+                            setContent((prev) => {
+                              return {
+                                ...prev,
+                                content: [
+                                  ...prev?.content?.filter(
+                                    (x) => x.id !== element.id
+                                  ),
+                                  {
+                                    ...element,
+                                    heading: e.target.value,
+                                  },
+                                ],
+                              };
+                            });
+                          }}
+                        />
+                      </h1>
+                    );
+                  } else if (element?.size === 2) {
+                    return (
+                      <h3
+                        onClick={() => {
+                          setSelectedElement(element);
                         }}
-                      />
-                    </h1>
-                  );
-                } else if (element?.size === 2) {
-                  return (
-                    <h3
-                      onClick={() => {
-                        setSelectedElement(element);
-                      }}
-                    >
-                      <input
-                        style={{
-                          fontSize: "30" + "px",
-                          fontWeight: 700,
-                          textAlign: "center",
-                          color: element?.fontColor,
+                      >
+                        <input
+                          style={{
+                            fontSize: "30" + "px",
+                            fontWeight: 700,
+                            textAlign: element?.textAlign,
+                            color: element?.fontColor,
+                          }}
+                          type="text"
+                          className="w-full focus-within:outline-none"
+                          value={element?.heading}
+                          onChange={(e) => {
+                            setContent((prev) => {
+                              return {
+                                ...prev,
+                                content: [
+                                  ...prev?.content?.filter(
+                                    (x) => x.id !== element.id
+                                  ),
+                                  {
+                                    ...element,
+                                    heading: e.target.value,
+                                  },
+                                ],
+                              };
+                            });
+                          }}
+                        />
+                      </h3>
+                    );
+                  } else if (element?.size === 3) {
+                    return (
+                      <h3
+                        onClick={() => {
+                          setSelectedElement(element);
                         }}
-                        type="text"
-                        className="w-full focus-within:outline-none"
-                        value={element?.heading}
-                        onChange={(e) => {
-                          setContent((prev) => {
-                            return {
-                              ...prev,
-                              content: [
-                                ...prev?.content?.filter(
-                                  (x) => x.id !== element.id
-                                ),
-                                {
-                                  ...element,
-                                  heading: e.target.value,
-                                },
-                              ],
-                            };
-                          });
+                      >
+                        <input
+                          style={{
+                            fontSize: "24" + "px",
+                            fontWeight: 700,
+                            textAlign: element?.textAlign,
+                            color: element?.fontColor,
+                          }}
+                          type="text"
+                          className="w-full focus-within:outline-none"
+                          value={element?.heading}
+                          onChange={(e) => {
+                            setContent((prev) => {
+                              return {
+                                ...prev,
+                                content: [
+                                  ...prev?.content?.filter(
+                                    (x) => x.id !== element.id
+                                  ),
+                                  {
+                                    ...element,
+                                    heading: e.target.value,
+                                  },
+                                ],
+                              };
+                            });
+                          }}
+                        />
+                      </h3>
+                    );
+                  } else if (element?.size === 4) {
+                    return (
+                      <h3
+                        onClick={() => {
+                          setSelectedElement(element);
                         }}
-                      />
-                    </h3>
-                  );
-                } else if (element?.size === 3) {
-                  return (
-                    <h3
-                      onClick={() => {
-                        setSelectedElement(element);
-                      }}
-                    >
-                      <input
-                        style={{
-                          fontSize: "24" + "px",
-                          fontWeight: 700,
-                          textAlign: "center",
-                          color: element?.fontColor,
+                      >
+                        <input
+                          style={{
+                            fontSize: "20" + "px",
+                            fontWeight: 700,
+                            textAlign: element?.textAlign,
+                            color: element?.fontColor,
+                          }}
+                          type="text"
+                          className="w-full focus-within:outline-none"
+                          value={element?.heading}
+                          onChange={(e) => {
+                            setContent((prev) => {
+                              return {
+                                ...prev,
+                                content: [
+                                  ...prev?.content?.filter(
+                                    (x) => x.id !== element.id
+                                  ),
+                                  {
+                                    ...element,
+                                    heading: e.target.value,
+                                  },
+                                ],
+                              };
+                            });
+                          }}
+                        />
+                      </h3>
+                    );
+                  } else if (element?.size === 5) {
+                    return (
+                      <h5
+                        onClick={() => {
+                          setSelectedElement(element);
                         }}
-                        type="text"
-                        className="w-full focus-within:outline-none"
-                        value={element?.heading}
-                        onChange={(e) => {
-                          setContent((prev) => {
-                            return {
-                              ...prev,
-                              content: [
-                                ...prev?.content?.filter(
-                                  (x) => x.id !== element.id
-                                ),
-                                {
-                                  ...element,
-                                  heading: e.target.value,
-                                },
-                              ],
-                            };
-                          });
+                      >
+                        <input
+                          style={{
+                            fontSize: "18" + "px",
+                            fontWeight: 700,
+                            textAlign: element?.textAlign,
+                            color: element?.fontColor,
+                          }}
+                          type="text"
+                          className="w-full focus-within:outline-none"
+                          value={element?.heading}
+                          onChange={(e) => {
+                            setContent((prev) => {
+                              return {
+                                ...prev,
+                                content: [
+                                  ...prev?.content?.filter(
+                                    (x) => x.id !== element.id
+                                  ),
+                                  {
+                                    ...element,
+                                    heading: e.target.value,
+                                  },
+                                ],
+                              };
+                            });
+                          }}
+                        />
+                      </h5>
+                    );
+                  } else if (element?.size === 6) {
+                    return (
+                      <h6
+                        onClick={() => {
+                          setSelectedElement(element);
                         }}
-                      />
-                    </h3>
-                  );
-                } else if (element?.size === 4) {
-                  return (
-                    <h3
-                      onClick={() => {
-                        setSelectedElement(element);
-                      }}
-                    >
-                      <input
-                        style={{
-                          fontSize: "20" + "px",
-                          fontWeight: 700,
-                          textAlign: "center",
-                          color: element?.fontColor,
-                        }}
-                        type="text"
-                        className="w-full focus-within:outline-none"
-                        value={element?.heading}
-                        onChange={(e) => {
-                          setContent((prev) => {
-                            return {
-                              ...prev,
-                              content: [
-                                ...prev?.content?.filter(
-                                  (x) => x.id !== element.id
-                                ),
-                                {
-                                  ...element,
-                                  heading: e.target.value,
-                                },
-                              ],
-                            };
-                          });
-                        }}
-                      />
-                    </h3>
-                  );
-                } else if (element?.size === 5) {
-                  return (
-                    <h5
-                      onClick={() => {
-                        setSelectedElement(element);
-                      }}
-                    >
-                      <input
-                        style={{
-                          fontSize: "18" + "px",
-                          fontWeight: 700,
-                          textAlign: "center",
-                          color: element?.fontColor,
-                        }}
-                        type="text"
-                        className="w-full focus-within:outline-none"
-                        value={element?.heading}
-                        onChange={(e) => {
-                          setContent((prev) => {
-                            return {
-                              ...prev,
-                              content: [
-                                ...prev?.content?.filter(
-                                  (x) => x.id !== element.id
-                                ),
-                                {
-                                  ...element,
-                                  heading: e.target.value,
-                                },
-                              ],
-                            };
-                          });
-                        }}
-                      />
-                    </h5>
-                  );
-                } else if (element?.size === 6) {
-                  return (
-                    <h6
-                      onClick={() => {
-                        setSelectedElement(element);
-                      }}
-                    >
-                      <input
-                        style={{
-                          fontSize: "16" + "px",
-                          fontWeight: 700,
-                          textAlign: "center",
-                          color: element?.fontColor,
-                        }}
-                        type="text"
-                        className="w-full focus-within:outline-none"
-                        value={element?.heading}
-                        onChange={(e) => {
-                          setContent((prev) => {
-                            return {
-                              ...prev,
-                              content: [
-                                ...prev?.content?.filter(
-                                  (x) => x.id !== element.id
-                                ),
-                                {
-                                  ...element,
-                                  heading: e.target.value,
-                                },
-                              ],
-                            };
-                          });
-                        }}
-                      />
-                    </h6>
-                  );
+                      >
+                        <input
+                          style={{
+                            fontSize: "16" + "px",
+                            fontWeight: 700,
+                            textAlign: element?.textAlign,
+                            color: element?.fontColor,
+                          }}
+                          type="text"
+                          className="w-full focus-within:outline-none"
+                          value={element?.heading}
+                          onChange={(e) => {
+                            setContent((prev) => {
+                              return {
+                                ...prev,
+                                content: [
+                                  ...prev?.content?.filter(
+                                    (x) => x.id !== element.id
+                                  ),
+                                  {
+                                    ...element,
+                                    heading: e.target.value,
+                                  },
+                                ],
+                              };
+                            });
+                          }}
+                        />
+                      </h6>
+                    );
+                  }
                 }
-              }
-            })}
+              })}
           </div>
         ) : (
           <div
