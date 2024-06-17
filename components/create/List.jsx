@@ -16,7 +16,7 @@ import { Trash2 } from "lucide-react";
 import { Download } from "lucide-react";
 import useMotion from "@/context/MotionContext";
 
-export default function List() {
+export default function List({ setDeleteAlert, setSelectedPDF }) {
   const { userData, uploadToDB } = useData();
   const { M } = useMotion();
 
@@ -67,7 +67,15 @@ export default function List() {
                   >
                     <PenLine color="white" size={14} />
                   </Button>
-                  <Button className="" variant="destructive">
+                  <Button
+                    onClick={() => {
+                      setDeleteAlert(true);
+                      setSelectedPDF(pdf);
+                      // deletePDF(pdf);
+                    }}
+                    className=""
+                    variant="destructive"
+                  >
                     <Trash2 size={14} />
                   </Button>
                   <Button className="" variant="secondary">

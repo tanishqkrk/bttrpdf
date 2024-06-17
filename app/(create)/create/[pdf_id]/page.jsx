@@ -36,6 +36,8 @@ import { Baseline } from "lucide-react";
 import { AlignLeft } from "lucide-react";
 import { AlignCenter } from "lucide-react";
 import { AlignRight } from "lucide-react";
+import { BoldIcon } from "lucide-react";
+import { Toggle } from "@/components/ui/toggle";
 
 export default function Create({ params }) {
   const { userData, uploadToDB } = useData();
@@ -72,6 +74,8 @@ export default function Create({ params }) {
     fetchContent();
   }, [userData]);
 
+  const [selectedElement, setSelectedElement] = useState(null);
+
   function addElement(type) {
     if (type === "heading") {
       const new_heading = {
@@ -83,6 +87,10 @@ export default function Create({ params }) {
         fontColor: "#000",
         backgroundColor: "#fff",
         textAlign: "center",
+        bold: false,
+        italic: false,
+        underline: false,
+        margin: [],
       };
       setContent((prev) => {
         return {
@@ -94,8 +102,6 @@ export default function Create({ params }) {
       setSelectedElement(new_heading);
     }
   }
-
-  const [selectedElement, setSelectedElement] = useState({});
 
   const colorArray = {
     red: [
@@ -153,6 +159,8 @@ export default function Create({ params }) {
 
   // console.log(...content?.content);
 
+  // const [elementToTarget, setElementToTarget] = useState(selectedElement)
+
   return (
     <div className="bg-secondary">
       <nav className="bg-secondary flex justify-between items-center p-3 px-8 border-b-2 w-full">
@@ -187,275 +195,446 @@ export default function Create({ params }) {
           </button>
         </div>
       </nav>
-      <div className="toolbar p-2 px-12 bg-white dark:bg-black">
-        {selectedElement?.type === "heading" ? (
-          <div className="flex items-center gap-6">
-            <div>
-              <Select
-                className=""
-                value={content?.content
-                  ?.filter((x) => x.id === selectedElement.id)[0]
-                  ?.size.toString()}
-                onValueChange={(e) => {
-                  setContent((prev) => {
-                    return {
-                      ...prev,
-                      content: [
-                        ...prev?.content?.filter(
-                          (x) =>
-                            x.id !==
-                            content?.content?.filter(
+      {selectedElement && (
+        <div className="toolbar p-2 px-6 bg-gray-200 dark:bg-neutral-800">
+          {selectedElement?.type === "heading" ? (
+            <div className="flex items-center ">
+              <div>
+                <Select
+                  className=""
+                  value={content?.content
+                    ?.filter((x) => x.id === selectedElement.id)[0]
+                    ?.size.toString()}
+                  onValueChange={(e) => {
+                    setContent((prev) => {
+                      return {
+                        ...prev,
+                        content: [
+                          ...prev?.content?.filter(
+                            (x) =>
+                              x.id !==
+                              content?.content?.filter(
+                                (x) => x.id === selectedElement.id
+                              )[0].id
+                          ),
+                          {
+                            ...content?.content?.filter(
                               (x) => x.id === selectedElement.id
-                            )[0].id
-                        ),
-                        {
-                          ...content?.content?.filter(
+                            )[0],
+                            size: parseInt(e),
+                          },
+                        ],
+                      };
+                    });
+                  }}
+                >
+                  <SelectTrigger className="w-16 bg-transparent">
+                    <SelectValue placeholder="H" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem
+                      style={{
+                        fontSize: "34px",
+                        // padding: " 16px ",
+                      }}
+                      value="1"
+                    >
+                      H1
+                    </SelectItem>
+                    <SelectItem
+                      style={{
+                        fontSize: "30px",
+                        // padding: " 16px ",
+                      }}
+                      value="2"
+                    >
+                      H2
+                    </SelectItem>
+                    <SelectItem
+                      style={{
+                        fontSize: "24px",
+                        // padding: " 16px ",
+                      }}
+                      value="3"
+                    >
+                      H3
+                    </SelectItem>
+                    <SelectItem
+                      style={{
+                        fontSize: "20px",
+                        // padding: " 16px ",
+                      }}
+                      value="4"
+                    >
+                      H4
+                    </SelectItem>
+                    <SelectItem
+                      style={{
+                        fontSize: "18px",
+                        // padding: " 16px ",
+                      }}
+                      value="5"
+                    >
+                      H5
+                    </SelectItem>
+                    <SelectItem
+                      style={{
+                        fontSize: "16px",
+                        // padding: " 16px ",
+                      }}
+                      value="6"
+                    >
+                      H6
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <DropdownMenu className="">
+                  <DropdownMenuTrigger>
+                    <Button variant="outline " className="bg-transparent">
+                      <Baseline
+                        color={
+                          content?.content?.filter(
                             (x) => x.id === selectedElement.id
-                          )[0],
-                          size: parseInt(e),
-                        },
-                      ],
-                    };
-                  });
-                }}
-              >
-                <SelectTrigger className="w-16">
-                  <SelectValue placeholder="H" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="1">H1</SelectItem>
-                  <SelectItem value="2">H2</SelectItem>
-                  <SelectItem value="3">H3</SelectItem>
-                  <SelectItem value="4">H4</SelectItem>
-                  <SelectItem value="5">H5</SelectItem>
-                  <SelectItem value="6">H6</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <Button variant="outline">
-                    <Baseline
-                      color={
-                        content?.content?.filter(
-                          (x) => x.id === selectedElement.id
-                        )[0].fontColor
-                      }
-                    />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>Text color</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <div className="grid grid-cols-5 gap-2">
-                    {colors?.map((color) => {
-                      return (
-                        <DropdownMenuItem
-                          onClick={() => {
-                            setContent((prev) => {
-                              return {
-                                ...prev,
-                                content: [
-                                  ...prev?.content?.filter(
-                                    (x) =>
-                                      x.id !==
-                                      content?.content?.filter(
+                          )[0].fontColor
+                        }
+                      />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuLabel>Text color</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <div className="grid grid-cols-5 gap-2">
+                      {colors?.map((color) => {
+                        return (
+                          <DropdownMenuItem
+                            onClick={() => {
+                              setContent((prev) => {
+                                return {
+                                  ...prev,
+                                  content: [
+                                    ...prev?.content?.filter(
+                                      (x) =>
+                                        x.id !==
+                                        content?.content?.filter(
+                                          (x) => x.id === selectedElement.id
+                                        )[0].id
+                                    ),
+                                    {
+                                      ...content?.content?.filter(
                                         (x) => x.id === selectedElement.id
-                                      )[0].id
-                                  ),
-                                  {
-                                    ...content?.content?.filter(
-                                      (x) => x.id === selectedElement.id
-                                    )[0],
-                                    fontColor: color,
-                                  },
-                                ],
-                              };
-                            });
-                          }}
-                          className="p-0"
-                        >
-                          <div
-                            style={{
-                              background: color,
-                              outline:
-                                content?.content?.filter(
-                                  (x) => x.id === selectedElement.id
-                                )[0]?.fontColor === color
-                                  ? "3px solid lightgray"
-                                  : "",
+                                      )[0],
+                                      fontColor: color,
+                                    },
+                                  ],
+                                };
+                              });
                             }}
-                            className="w-5 h-5  rounded-sm"
-                          ></div>
-                        </DropdownMenuItem>
-                      );
-                    })}
-                  </div>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-            <div className="flex gap-3 items-center">
-              <Button
-                onClick={() => {
-                  setContent((prev) => {
-                    return {
-                      ...prev,
-                      content: [
-                        ...prev?.content?.filter(
-                          (x) =>
-                            x.id !==
-                            content?.content?.filter(
-                              (x) => x.id === selectedElement.id
-                            )[0].id
-                        ),
-                        {
-                          ...content?.content?.filter(
+                            className="p-0"
+                          >
+                            <div
+                              style={{
+                                background: color,
+                                outline:
+                                  content?.content?.filter(
+                                    (x) => x.id === selectedElement.id
+                                  )[0]?.fontColor === color
+                                    ? "3px solid lightgray"
+                                    : "",
+                              }}
+                              className="w-5 h-5  rounded-sm"
+                            ></div>
+                          </DropdownMenuItem>
+                        );
+                      })}
+                    </div>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+              <div>
+                <DropdownMenu className="">
+                  <DropdownMenuTrigger>
+                    <Button variant="outline " className="bg-transparent">
+                      <div
+                        style={{
+                          background: content?.content?.filter(
                             (x) => x.id === selectedElement.id
-                          )[0],
-                          textAlign: "left",
-                        },
-                      ],
-                    };
-                  });
-                }}
-                variant={
-                  content?.content?.filter(
-                    (x) => x.id === selectedElement.id
-                  )[0]?.textAlign === "left"
-                    ? "primary"
-                    : "outline"
-                }
-                className={
-                  content?.content?.filter(
-                    (x) => x.id === selectedElement.id
-                  )[0]?.textAlign === "left"
-                    ? "bg-theme"
-                    : "bg-inherit"
-                }
-              >
-                <AlignLeft
-                  color={
+                          )[0].backgroundColor,
+                        }}
+                        className="w-6 rounded-md border-white border-2 dark:border-black h-full"
+                      ></div>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuLabel>Background color</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <div className="grid grid-cols-5 gap-2">
+                      {colors?.map((color) => {
+                        return (
+                          <DropdownMenuItem
+                            onClick={() => {
+                              setContent((prev) => {
+                                return {
+                                  ...prev,
+                                  content: [
+                                    ...prev?.content?.filter(
+                                      (x) =>
+                                        x.id !==
+                                        content?.content?.filter(
+                                          (x) => x.id === selectedElement.id
+                                        )[0].id
+                                    ),
+                                    {
+                                      ...content?.content?.filter(
+                                        (x) => x.id === selectedElement.id
+                                      )[0],
+                                      backgroundColor: color,
+                                    },
+                                  ],
+                                };
+                              });
+                            }}
+                            className="p-0"
+                          >
+                            <div
+                              style={{
+                                background: color,
+                                outline:
+                                  content?.content?.filter(
+                                    (x) => x.id === selectedElement.id
+                                  )[0]?.fontColor === color
+                                    ? "3px solid lightgray"
+                                    : "",
+                              }}
+                              className="w-5 h-5  rounded-sm"
+                            ></div>
+                          </DropdownMenuItem>
+                        );
+                      })}
+                    </div>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+              <div className="flex gap-1 items-center">
+                <Button
+                  onClick={() => {
+                    setContent((prev) => {
+                      return {
+                        ...prev,
+                        content: [
+                          ...prev?.content?.filter(
+                            (x) =>
+                              x.id !==
+                              content?.content?.filter(
+                                (x) => x.id === selectedElement.id
+                              )[0].id
+                          ),
+                          {
+                            ...content?.content?.filter(
+                              (x) => x.id === selectedElement.id
+                            )[0],
+                            textAlign: "left",
+                          },
+                        ],
+                      };
+                    });
+                  }}
+                  variant={
                     content?.content?.filter(
                       (x) => x.id === selectedElement.id
                     )[0]?.textAlign === "left"
-                      ? "white"
-                      : "black"
+                      ? "primary"
+                      : "outline"
                   }
-                />
-              </Button>
-              <Button
-                onClick={() => {
-                  setContent((prev) => {
-                    return {
-                      ...prev,
-                      content: [
-                        ...prev?.content?.filter(
-                          (x) =>
-                            x.id !==
-                            content?.content?.filter(
+                  className={
+                    content?.content?.filter(
+                      (x) => x.id === selectedElement.id
+                    )[0]?.textAlign === "left"
+                      ? "bg-theme"
+                      : "bg-inherit"
+                  }
+                >
+                  <AlignLeft
+                    color={
+                      content?.content?.filter(
+                        (x) => x.id === selectedElement.id
+                      )[0]?.textAlign === "left"
+                        ? "white"
+                        : "black"
+                    }
+                  />
+                </Button>
+                <Button
+                  onClick={() => {
+                    setContent((prev) => {
+                      return {
+                        ...prev,
+                        content: [
+                          ...prev?.content?.filter(
+                            (x) =>
+                              x.id !==
+                              content?.content?.filter(
+                                (x) => x.id === selectedElement.id
+                              )[0].id
+                          ),
+                          {
+                            ...content?.content?.filter(
                               (x) => x.id === selectedElement.id
-                            )[0].id
-                        ),
-                        {
-                          ...content?.content?.filter(
-                            (x) => x.id === selectedElement.id
-                          )[0],
-                          textAlign: "center",
-                        },
-                      ],
-                    };
-                  });
-                }}
-                variant={
-                  content?.content?.filter(
-                    (x) => x.id === selectedElement.id
-                  )[0]?.textAlign === "center"
-                    ? "primary"
-                    : "outline"
-                }
-                className={
-                  content?.content?.filter(
-                    (x) => x.id === selectedElement.id
-                  )[0]?.textAlign === "center"
-                    ? "bg-theme"
-                    : "bg-inherit"
-                }
-              >
-                <AlignCenter
-                  color={
+                            )[0],
+                            textAlign: "center",
+                          },
+                        ],
+                      };
+                    });
+                  }}
+                  variant={
                     content?.content?.filter(
                       (x) => x.id === selectedElement.id
                     )[0]?.textAlign === "center"
-                      ? "white"
-                      : "black"
+                      ? "primary"
+                      : "outline"
                   }
-                />
-              </Button>
-              <Button
-                onClick={() => {
-                  setContent((prev) => {
-                    return {
-                      ...prev,
-                      content: [
-                        ...prev?.content?.filter(
-                          (x) =>
-                            x.id !==
-                            content?.content?.filter(
+                  className={
+                    content?.content?.filter(
+                      (x) => x.id === selectedElement.id
+                    )[0]?.textAlign === "center"
+                      ? "bg-theme"
+                      : "bg-inherit"
+                  }
+                >
+                  <AlignCenter
+                    color={
+                      content?.content?.filter(
+                        (x) => x.id === selectedElement.id
+                      )[0]?.textAlign === "center"
+                        ? "white"
+                        : "black"
+                    }
+                  />
+                </Button>
+                <Button
+                  onClick={() => {
+                    setContent((prev) => {
+                      return {
+                        ...prev,
+                        content: [
+                          ...prev?.content?.filter(
+                            (x) =>
+                              x.id !==
+                              content?.content?.filter(
+                                (x) => x.id === selectedElement.id
+                              )[0].id
+                          ),
+                          {
+                            ...content?.content?.filter(
                               (x) => x.id === selectedElement.id
-                            )[0].id
-                        ),
-                        {
-                          ...content?.content?.filter(
-                            (x) => x.id === selectedElement.id
-                          )[0],
-                          textAlign: "right",
-                        },
-                      ],
-                    };
-                  });
-                }}
-                variant={
-                  content?.content?.filter(
-                    (x) => x.id === selectedElement.id
-                  )[0]?.textAlign === "right"
-                    ? "primary"
-                    : "outline"
-                }
-                className={
-                  content?.content?.filter(
-                    (x) => x.id === selectedElement.id
-                  )[0]?.textAlign === "right"
-                    ? "bg-theme"
-                    : "bg-inherit"
-                }
-              >
-                <AlignRight
-                  color={
+                            )[0],
+                            textAlign: "right",
+                          },
+                        ],
+                      };
+                    });
+                  }}
+                  variant={
                     content?.content?.filter(
                       (x) => x.id === selectedElement.id
                     )[0]?.textAlign === "right"
-                      ? "white"
-                      : "black"
+                      ? "primary"
+                      : "outline"
                   }
-                />
-              </Button>
+                  className={
+                    content?.content?.filter(
+                      (x) => x.id === selectedElement.id
+                    )[0]?.textAlign === "right"
+                      ? "bg-theme"
+                      : "bg-inherit"
+                  }
+                >
+                  <AlignRight
+                    color={
+                      content?.content?.filter(
+                        (x) => x.id === selectedElement.id
+                      )[0]?.textAlign === "right"
+                        ? "white"
+                        : "black"
+                    }
+                  />
+                </Button>
+              </div>
+
+              <div>
+                <Button
+                  onClick={() => {
+                    setContent((prev) => {
+                      return {
+                        ...prev,
+                        content: [
+                          ...prev?.content?.filter(
+                            (x) =>
+                              x.id !==
+                              content?.content?.filter(
+                                (x) => x.id === selectedElement.id
+                              )[0].id
+                          ),
+                          {
+                            ...content?.content?.filter(
+                              (x) => x.id === selectedElement.id
+                            )[0],
+                            bold: !prev?.content?.filter(
+                              (x) =>
+                                x.id !==
+                                content?.content?.filter(
+                                  (x) => x.id === selectedElement.id
+                                )[0]
+                            ).bold,
+                          },
+                        ],
+                      };
+                    });
+                  }}
+                  variant={
+                    content?.content?.filter(
+                      (x) => x.id === selectedElement.id
+                    )[0]?.bold
+                      ? "primary"
+                      : "outline"
+                  }
+                  className={
+                    content?.content?.filter(
+                      (x) => x.id === selectedElement.id
+                    )[0]?.bold
+                      ? "bg-theme"
+                      : "bg-inherit"
+                  }
+                >
+                  <BoldIcon
+                    color={
+                      content?.content?.filter(
+                        (x) => x.id === selectedElement.id
+                      )[0]?.bold
+                        ? "white"
+                        : "black"
+                    }
+                  />
+                </Button>
+              </div>
             </div>
-          </div>
-        ) : selectedElement?.type === "text" ? (
-          <></>
-        ) : selectedElement?.type === "image" ? (
-          <></>
-        ) : selectedElement?.type === "table" ? (
-          <></>
-        ) : selectedElement?.type === "ulist" ? (
-          <></>
-        ) : selectedElement?.type === "olist" ? (
-          <></>
-        ) : (
-          <div></div>
-        )}
-      </div>
+          ) : selectedElement?.type === "text" ? (
+            <></>
+          ) : selectedElement?.type === "image" ? (
+            <></>
+          ) : selectedElement?.type === "table" ? (
+            <></>
+          ) : selectedElement?.type === "ulist" ? (
+            <></>
+          ) : selectedElement?.type === "olist" ? (
+            <></>
+          ) : (
+            <div></div>
+          )}
+        </div>
+      )}
       <M.button
         onClick={() => setAddMenuOn((x) => !x)}
         initial={{
@@ -487,7 +666,7 @@ export default function Create({ params }) {
             <button
               onClick={() => {
                 addElement("heading");
-                setAddMenuOn(false);
+                // setAddMenuOn(false);
               }}
               className={addButtonsStyle}
             >
@@ -574,6 +753,8 @@ export default function Create({ params }) {
                             fontWeight: 700,
                             textAlign: element?.textAlign,
                             color: element?.fontColor,
+                            background: element?.backgroundColor,
+                            fontWeight: element?.bold ? "700" : "100",
                           }}
                           type="text"
                           className="w-full focus-within:outline-none"
@@ -610,6 +791,8 @@ export default function Create({ params }) {
                             fontWeight: 700,
                             textAlign: element?.textAlign,
                             color: element?.fontColor,
+                            background: element?.backgroundColor,
+                            fontWeight: element?.bold ? "700" : "100",
                           }}
                           type="text"
                           className="w-full focus-within:outline-none"
@@ -646,6 +829,8 @@ export default function Create({ params }) {
                             fontWeight: 700,
                             textAlign: element?.textAlign,
                             color: element?.fontColor,
+                            background: element?.backgroundColor,
+                            fontWeight: element?.bold ? "700" : "100",
                           }}
                           type="text"
                           className="w-full focus-within:outline-none"
@@ -682,6 +867,8 @@ export default function Create({ params }) {
                             fontWeight: 700,
                             textAlign: element?.textAlign,
                             color: element?.fontColor,
+                            background: element?.backgroundColor,
+                            fontWeight: element?.bold ? "700" : "100",
                           }}
                           type="text"
                           className="w-full focus-within:outline-none"
@@ -718,6 +905,8 @@ export default function Create({ params }) {
                             fontWeight: 700,
                             textAlign: element?.textAlign,
                             color: element?.fontColor,
+                            background: element?.backgroundColor,
+                            fontWeight: element?.bold ? "700" : "100",
                           }}
                           type="text"
                           className="w-full focus-within:outline-none"
@@ -754,6 +943,8 @@ export default function Create({ params }) {
                             fontWeight: 700,
                             textAlign: element?.textAlign,
                             color: element?.fontColor,
+                            background: element?.backgroundColor,
+                            fontWeight: element?.bold ? "700" : "100",
                           }}
                           type="text"
                           className="w-full focus-within:outline-none"
