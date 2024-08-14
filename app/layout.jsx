@@ -20,18 +20,19 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ThemeProvider
+        {/* <ThemeProvider
           attribute="class"
           defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
-          <AuthProvider>
-            <DataProvider>
-              <MotionProvider>{children}</MotionProvider>
-            </DataProvider>
-          </AuthProvider>
-        </ThemeProvider>
+          
+        </ThemeProvider> */}
+        <AuthProvider>
+          <DataProvider>
+            <MotionProvider>{children}</MotionProvider>
+          </DataProvider>
+        </AuthProvider>
       </body>
     </html>
   );

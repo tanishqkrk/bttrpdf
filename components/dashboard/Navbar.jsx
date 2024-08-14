@@ -37,7 +37,7 @@ export default function () {
         />
       </div>
       <div className="w-1/5 flex items-center gap-3 justify-end">
-        <ModeToggle></ModeToggle>
+        {/* <ModeToggle></ModeToggle> */}
         <Link href="/" className="flex items-center justify-center gap-3">
           <div className="text-sm font-bold">{userData?.name}</div>
           <img className="w-12 rounded-full" src={userData?.img} alt="" />

@@ -33,7 +33,7 @@ export default function () {
             <Github />
           </Button>
         </a>
-        <ModeToggle></ModeToggle>
+        {/* <ModeToggle></ModeToggle> */}
         {userData ? (
           <Link href={"/dashboard"}>
             <Button
@@ -50,9 +50,11 @@ export default function () {
                 </>
               ) : (
                 <M.div
-                  whileTap={{
-                    scale: 0.9,
-                  }}
+                  whileTap={
+                    {
+                      // scale: 0.9,
+                    }
+                  }
                   className="flex gap-3 items-center"
                 >
                   <img
